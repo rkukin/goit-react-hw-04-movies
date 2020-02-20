@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import routes from '../routes';
 import Layout from "./Layout";
 import HomePage from "../views/HomePage"
@@ -20,6 +20,7 @@ export default class App extends Component {
           <Route exact path={routes.HOME} component={HomePage}/>
           <Route path={routes.DETAILS} component={MovieDetailsPage}/>
           <Route exact path={routes.MOVIES} component={MoviesPage}/>
+          <Redirect to="/" />
         </Switch>
       </>
     );
