@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Switch, NavLink } from 'react-router-dom';
-import HomePage from '../views/HomePage';
-import MovieDetailsPage from '../views/MovieDetailsPage';
+import { Route, Switch } from 'react-router-dom';
 import routes from '../routes';
-import MoviesPage from '../views/MoviesPage';
+import Layout from "./Layout";
 
 export default class App extends Component {
   state = {
@@ -14,10 +12,7 @@ export default class App extends Component {
     const { films } = this.state;
     return (
       <>
-        <header>
-          <NavLink to={routes.HOME}>Home page</NavLink>
-          <NavLink to={routes.MOVIES}> Movies page</NavLink>
-        </header>
+        <Layout/>
         <Switch>
           <Route exact path={routes.HOME} component={HomePage} />
           <Route path={routes.DETAILS} component={MovieDetailsPage} />
