@@ -5,11 +5,13 @@ import fetchMovies from "../services/GetMovies"
 
 export default class MovieDetailsPage extends Component {
 
-  state = {};
+  state = {
+    movie: {}
+  };
 
   componentDidMount() {
     fetchMovies.fetchDetailsAboutMovie(this.props.match.params.movieId)
-      .then(response => { this.setState(response.result) })
+      .then(response => this.setState({movie: response}) )
   }
 
   render() {
