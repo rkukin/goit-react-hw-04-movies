@@ -15,7 +15,8 @@ export const fetchMovieByQuery = query => {
 };
 
 export const fetchDetailsAboutMovie = id => {
-  return axios.get(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`);
+  // return axios.get(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`);
+  return fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then(res => res.json());
 };
 
 export const fetchMovieCast = id => {
