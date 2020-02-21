@@ -27,20 +27,18 @@ export default class Homepage extends Component {
       .finally(() => this.setState({isLoading: false}))
   };
 
-
   render() {
     const { popular, error } = this.state;
     console.log(this.state);
     return (
       <>
       <div>Homepage</div>
-        {
-          popular && !error && <PopularList>
+        {popular && !error && <PopularList>
           {popular.map((movie) => {
             return <PopularListItem key={movie.id}><Link to={`/movies/${movie.id}`}>{movie.original_title}</Link></PopularListItem>
           })}
-        </PopularList>
-        }
+        </PopularList>}
+        {error && <p>error</p>}
         </>
     )
   }
