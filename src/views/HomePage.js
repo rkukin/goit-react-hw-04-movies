@@ -21,29 +21,26 @@ export default class Homepage extends Component {
 
   componentDidMount() {
     fetchTrending.fetchMostPopularMovies()
+
       .then(response => this.setState({popular:response.results}))
-      .catch(error => this.setState({error}))
+      .catch(error => console.log(error))
       .finally(() => this.setState({isLoading: false}))
   };
 
-  onClick(id) {
-
-  }
 
   render() {
-    const { popular } = this.state;
+    const { popular, error } = this.state;
     console.log(this.state);
     return (
       <>
       <div>Homepage</div>
-        <PopularList>
+        {
+          popular && !error && <PopularList>
           {popular.map((movie) => {
             return <PopularListItem key={movie.id}><Link to={`/movies/${movie.id}`}>{movie.original_title}</Link></PopularListItem>
           })}
-          {/*{popular.map(({id, original_title}) =>*/}
-          {/*  <PopularListItem key={{id}}>{original_title}</PopularListItem>*/}
-          {/*)}*/}
         </PopularList>
+        }
         </>
     )
   }
