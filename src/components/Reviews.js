@@ -12,19 +12,33 @@ export default class Reviews extends Component {
   };
 
   componentDidMount() {
-    this.fetchCasts(this.props.match.params.movieId);
+    this.fetchReviews(this.props.match.params.movieId);
   }
 
-  fetchCasts = (id) => {
-    fetchMovies.fetchMovieCast(id)
-      .then(response => this.setState({cast: response.cast}))
+  fetchReviews = (id) => {
+    fetchMovies.fetchMovieReviews(id)
+      .then(response => this.setState({reviews: response.results}))
       .catch(error => this.setState({error: error}))
       .finally(() => this.setState({isLoading: false}))
   };
 
   render() {
     return (
-      <h2>Reviews</h2>
+      <>
+        {this.state.isLoading && <p>Loading...</p>}
+        {!this.state.isLoading && this.state.error && <p>{this.state.error}</p>}
+        {!this.state.isLoading && !this.state.error && this.state.reviews.length === 0 && <p>No reviews for this movie</p>}
+        {!this.state.isLoading && !this.state.error && this.state.reviews.length > 0 &&
+        <ul>
+          {this.state.reviews.map((review) => {
+            return <li key={review.id}>
+              <p>{`AUTHOR: ${review.author}`}</p>
+              <p>{review.content}</p>
+            </li>
+          })}
+        </ul>
+        }
+      </>
     )
   }
 }

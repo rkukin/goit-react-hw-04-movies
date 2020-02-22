@@ -7,12 +7,8 @@ import MovieDetailsPage from "../views/MovieDetailsPage"
 import MoviesPage from "../views/MoviesPage"
 
 export default class App extends Component {
-  state = {
-    films: [],
-  };
 
   render() {
-    const {films} = this.state;
     return (
       <>
         <Layout/>

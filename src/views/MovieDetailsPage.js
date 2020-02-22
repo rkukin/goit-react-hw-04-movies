@@ -5,6 +5,7 @@ import fetchMovies from "../services/GetMovies"
 import {Link, Route} from "react-router-dom";
 import Reviews from "../components/Reviews";
 import Cast from "../components/Cast";
+import routes from "../routes"
 
 export default class MovieDetailsPage extends Component {
 
@@ -39,6 +40,16 @@ export default class MovieDetailsPage extends Component {
       .then(response => this.setState({reviews: response.results}))
   };
 
+  handleGoBack = () => {
+    const { state } = this.props.location;
+
+    if (state && state.from) {
+      return this.props.history.push(state.from);
+    }
+
+    this.props.history.push(routes.MOVIES);
+  };
+
   render() {
 
     const year = this.state.movie.release_date ? this.state.movie.release_date.substring(0, 4) : '';
@@ -47,7 +58,7 @@ export default class MovieDetailsPage extends Component {
 
     return (
       <>
-        <button>Go Back</button>
+        <button onClick={this.handleGoBack}>Go Back</button>
         {this.state.isLoading === true && <p>Loading...</p>}
         {this.state.isLoading === false && this.state.error && <p>Something went wrong please try again</p>}
         {this.state.movie && this.state.isLoading === false &&

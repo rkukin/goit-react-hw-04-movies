@@ -29,7 +29,7 @@ export default class Homepage extends Component {
 
   render() {
     const {popular, error, isLoading} = this.state;
-    console.log(this.state);
+
     return (
       <>
         {isLoading === true && <p>Loading...</p>}

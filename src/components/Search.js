@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import styled from "styled-components";
 
 export default class Search extends Component {
-  state = { value: '' };
+  state = {
+    value: ''
+  };
 
   handleChange = e => {
     this.setState({
