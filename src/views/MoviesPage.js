@@ -21,6 +21,15 @@ export default class MoviesPage extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { query: prevQuery } = qetSearchQuery(prevProps.location.search);
+    const { query: nextQuery } = qetSearchQuery(this.props.location.search);
+
+    if (prevQuery !== nextQuery && nextQuery) {
+      this.fetchMoviesByQuery(nextQuery);
+    }
+  }
+
   fetchMoviesByQuery = query => {
     fetchMovies.fetchMovieByQuery(query)
       .then(response => this.setState({movies: response.results}))

@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import styled from "styled-components";
 import fetchTrending from "../services/GetMovies"
 import {Link} from "react-router-dom";
-import routes from "../routes";
 
 const PopularList = styled.ul`
 padding-top: 20px;
