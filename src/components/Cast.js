@@ -1,39 +1,39 @@
 ///movies/:movieId/cast - компонент <Cast>, информация о актерском составе. Рендерится на странице <MovieDetailsPage>.
 
-import React, { Component } from 'react';
-import * as searchMovie from '../services/GetMovies';
+import React, {Component} from 'react';
+import fetchMovies from "../services/GetMovies";
 
 export default class Cast extends Component {
   state = {
     cast: [],
+    isLoading: true,
+    error: null
   };
 
   componentDidMount() {
-    const { match } = this.props;
-    const { movieId } = match.params;
-    searchMovie.casts(movieId).then(Res => {
-      console.log('Res :', Res);
-      this.setState({ cast: Res.data.cast });
-    });
+    this.fetchCasts(this.props.match.params.movieId);
   }
 
+  fetchCasts = (id) => {
+    fetchMovies.fetchMovieCast(id)
+      .then(response => this.setState({cast: response.cast}))
+      .catch(error => this.setState({error: error}))
+      .finally(() => this.setState({isLoading: false}))
+  };
+
   render() {
-    const { cast } = this.state;
-    const { match } = this.props;
     return (
-      <ul>
-        {cast.map(el => (
-          <li className={st.list} key={el.id}>
-            <img
-              className={st.image}
-              src={`https://image.tmdb.org/t/p/w500${el.profile_path}`}
-              alt=""
-            />
-            <p>{el.name}</p>
-            <p>{el.character}</p>
-          </li>
-        ))}
-      </ul>
-    );
+      <>
+        <ul>
+          {this.state.cast.map((cast) => {
+            return <li key={cast.cast_id}>
+              <img alt={cast.name} src={"https://image.tmdb.org/t/p/w500/" + cast.profile_path}/>
+              <p>{cast.name}</p>
+              <p>{`Character: ${cast.character}`}</p>
+            </li>
+          })}
+        </ul>
+      </>
+    )
   }
 }

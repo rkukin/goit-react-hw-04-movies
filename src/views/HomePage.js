@@ -22,24 +22,27 @@ export default class Homepage extends Component {
   componentDidMount() {
     fetchTrending.fetchMostPopularMovies()
 
-      .then(response => this.setState({popular:response.results}))
+      .then(response => this.setState({popular: response.results}))
       .catch(error => console.log(error))
       .finally(() => this.setState({isLoading: false}))
   };
 
   render() {
-    const { popular, error } = this.state;
+    const {popular, error, isLoading} = this.state;
     console.log(this.state);
     return (
       <>
-      <div>Homepage</div>
-        {popular && !error && <PopularList>
+        {isLoading === true && <p>Loading...</p>}
+        {popular.length > 0 && !error && isLoading === false && <PopularList>
           {popular.map((movie) => {
-            return <PopularListItem key={movie.id}><Link to={`/movies/${movie.id}`}>{movie.original_title}</Link></PopularListItem>
+            return <PopularListItem key={movie.id}>
+              <Link to={`/movies/${movie.id}`}>{movie.original_title}</Link>
+            </PopularListItem>
           })}
         </PopularList>}
-        {error && <p>error</p>}
-        </>
+        {error && isLoading === false && <p>Something went wrong, please reload the page</p>}
+        {popular.length === 0 && !error && isLoading === false && <p>No popular movies yet</p>}
+      </>
     )
   }
 };
