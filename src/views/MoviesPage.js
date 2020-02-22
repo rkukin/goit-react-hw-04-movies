@@ -10,7 +10,8 @@ export default class MoviesPage extends Component {
   state = {
     movies: [],
     isLoading: true,
-    error: null
+    error: null,
+    noSearches: true
   };
 
   componentDidMount() {
@@ -31,8 +32,11 @@ export default class MoviesPage extends Component {
   }
 
   fetchMoviesByQuery = query => {
+    this.setState({noSearches: false, isLoading: true});
     fetchMovies.fetchMovieByQuery(query)
       .then(response => this.setState({movies: response.results}))
+      .catch(error => this.setState({error: error}))
+      .finally(() => this.setState({isLoading: false}))
   };
 
   handleChangeQuery = query => {
@@ -50,8 +54,10 @@ export default class MoviesPage extends Component {
     return (
       <>
         <Search onSubmit={this.handleChangeQuery}/>
-
-        {movies.length > 0 && (
+        {this.state.isLoading && !this.state.noSearches && <p>Loading...</p>}
+        {!this.state.isLoading && this.state.error && !this.state.noSearches && <p>{this.state.error}</p>}
+        {!this.state.isLoading && !this.state.error && movies.length === 0 && !this.state.noSearches && <p>No results found</p>}
+        {!this.state.isLoading && !this.state.error && movies.length > 0 && !this.state.noSearches && (
           <ul>
             {movies.map (movie => (
               <li key={movie.id}>
