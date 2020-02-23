@@ -23,8 +23,8 @@ export default class MoviesPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { query: prevQuery } = qetSearchQuery(prevProps.location.search);
-    const { query: nextQuery } = qetSearchQuery(this.props.location.search);
+    const {query: prevQuery} = qetSearchQuery(prevProps.location.search);
+    const {query: nextQuery} = qetSearchQuery(this.props.location.search);
 
     if (prevQuery !== nextQuery && nextQuery) {
       this.fetchMoviesByQuery(nextQuery);
@@ -48,22 +48,23 @@ export default class MoviesPage extends Component {
 
   render() {
 
-    const {movies} = this.state;
+    const {movies, isLoading, error, noSearches} = this.state;
     const {match} = this.props;
 
     return (
       <>
         <Search onSubmit={this.handleChangeQuery}/>
-        {this.state.isLoading && !this.state.noSearches && <p>Loading...</p>}
-        {!this.state.isLoading && this.state.error && !this.state.noSearches && <p>{this.state.error}</p>}
-        {!this.state.isLoading && !this.state.error && movies.length === 0 && !this.state.noSearches && <p>No results found</p>}
-        {!this.state.isLoading && !this.state.error && movies.length > 0 && !this.state.noSearches && (
+        {isLoading && !noSearches && <p>Loading...</p>}
+        {!isLoading && error && !noSearches && <p>{error}</p>}
+        {!isLoading && !error && movies.length === 0 && !noSearches &&
+        <p>No results found</p>}
+        {!isLoading && !error && movies.length > 0 && !noSearches && (
           <ul>
-            {movies.map (movie => (
+            {movies.map(movie => (
               <li key={movie.id}>
                 <Link to={{
                   pathname: `${match.url}/${movie.id}`,
-                  state: { from: this.props.location },
+                  state: {from: this.props.location},
                 }}>
                   {movie.original_title}
                 </Link>

@@ -33,6 +33,7 @@ export default class Homepage extends Component {
       <>
         {isLoading === true && <p>Loading...</p>}
         {popular.length > 0 && !error && isLoading === false && <PopularList>
+          <h3>Most popular</h3>
           {popular.map((movie) => {
             return <PopularListItem key={movie.id}>
               <Link to={`/movies/${movie.id}`}>{movie.original_title}</Link>

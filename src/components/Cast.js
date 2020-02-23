@@ -2,6 +2,21 @@
 
 import React, {Component} from 'react';
 import fetchMovies from "../services/GetMovies";
+import styled from "styled-components";
+
+const ActorPhoto = styled.img`
+max-height: 150px;
+width: auto;
+`;
+
+const Paragraph = styled.p`
+margin: 0;
+padding: 0;
+`;
+
+const ActorsListItem = styled.li`
+margin-bottom: 10px;
+`;
 
 export default class Cast extends Component {
   state = {
@@ -26,11 +41,11 @@ export default class Cast extends Component {
       <>
         <ul>
           {this.state.cast.map((cast) => {
-            return <li key={cast.cast_id}>
-              <img alt={cast.name} src={"https://image.tmdb.org/t/p/w500/" + cast.profile_path}/>
-              <p>{cast.name}</p>
-              <p>{`Character: ${cast.character}`}</p>
-            </li>
+            return <ActorsListItem key={cast.cast_id}>
+              <ActorPhoto alt={cast.name} src={`https://image.tmdb.org/t/p/w500/${cast.profile_path}`}/>
+              <Paragraph>{cast.name}</Paragraph>
+              <Paragraph>{`Character: ${cast.character}`}</Paragraph>
+            </ActorsListItem>
           })}
         </ul>
       </>

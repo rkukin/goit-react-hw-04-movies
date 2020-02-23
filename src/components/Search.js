@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import styled from "styled-components";
 
 export default class Search extends Component {
   state = {
@@ -16,7 +15,7 @@ export default class Search extends Component {
     e.preventDefault();
 
     this.props.onSubmit(this.state.value);
-    this.setState({ value: '' });
+    this.setState({value: ''});
   };
 
   render() {

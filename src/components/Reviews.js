@@ -23,12 +23,14 @@ export default class Reviews extends Component {
   };
 
   render() {
+    const { isLoading, error, reviews} = this.state;
     return (
       <>
-        {this.state.isLoading && <p>Loading...</p>}
-        {!this.state.isLoading && this.state.error && <p>{this.state.error}</p>}
-        {!this.state.isLoading && !this.state.error && this.state.reviews.length === 0 && <p>No reviews for this movie</p>}
-        {!this.state.isLoading && !this.state.error && this.state.reviews.length > 0 &&
+        {isLoading && <p>Loading...</p>}
+        {!isLoading && error && <p>{error}</p>}
+        {!isLoading && !error && reviews.length === 0 &&
+        <p>No reviews for this movie</p>}
+        {!isLoading && !error && reviews.length > 0 &&
         <ul>
           {this.state.reviews.map((review) => {
             return <li key={review.id}>
