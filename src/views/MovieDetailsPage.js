@@ -1,8 +1,8 @@
 //'/movies/:movieId' - компонент <MovieDetailsPage>, страница с детальной информацией о кинофильме.
 
-import React, {Component, lazy} from "react";
+import React, {Component, Suspense, lazy} from "react";
 import fetchMovies from "../services/GetMovies"
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import routes from "../routes";
 import styled from "styled-components";
 
@@ -76,7 +76,7 @@ export default class MovieDetailsPage extends Component {
           <button onClick={this.handleGoBack}>Go Back</button>
           <SectionWrapper>
             <Poster alt={movie.original_title}
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
             <div>
               <h1>{movie.original_title} ({year})</h1>
               <p>User score: {movie.vote_average * 10}%</p>
@@ -86,17 +86,19 @@ export default class MovieDetailsPage extends Component {
               <p>{names}</p>
             </div>
           </SectionWrapper>
-          <h3>Additional information</h3>
-          <ul>
-            <li><Link to={`${this.props.match.url}/cast`} onClick={() => this.onCastClick()}>Cast</Link></li>
-            <li><Link to={`${this.props.match.url}/review`} onClick={() => this.onReviewsClick()}>Reviews</Link></li>
-          </ul>
+            <h3>Additional information</h3>
+            <ul>
+              <li><Link to={`${this.props.match.url}/cast`} onClick={() => this.onCastClick()}>Cast</Link></li>
+              <li><Link to={`${this.props.match.url}/review`} onClick={() => this.onReviewsClick()}>Reviews</Link></li>
+            </ul>
         </>
         }
-        <Switch>
-          <Route exact path={`${this.props.match.path}/cast`} component={Cast}/>
-          <Route exact path={`${this.props.match.path}/review`} component={Reviews}/>
-        </Switch>
+        <Suspense fallback={<h2>Loading...</h2>}>
+          <Switch>
+            <Route exact path={`${this.props.match.path}/cast`} component={Cast}/>
+            <Route exact path={`${this.props.match.path}/review`} component={Reviews}/>
+          </Switch>
+        </Suspense>
       </>
     )
   }
