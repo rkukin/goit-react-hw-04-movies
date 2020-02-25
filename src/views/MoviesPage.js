@@ -54,10 +54,10 @@ export default class MoviesPage extends Component {
     return (
       <>
         <Search onSubmit={this.handleChangeQuery}/>
-        {isLoading && !noSearches && <p>Loading...</p>}
-        {!isLoading && error && !noSearches && <p>{error}</p>}
+        {isLoading && !noSearches && <h2>Loading...</h2>}
+        {!isLoading && error && !noSearches && <h2>{error}</h2>}
         {!isLoading && !error && movies.length === 0 && !noSearches &&
-        <p>No results found</p>}
+        <h2>No results found</h2>}
         {!isLoading && !error && movies.length > 0 && !noSearches && (
           <ul>
             {movies.map(movie => (

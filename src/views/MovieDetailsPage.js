@@ -1,12 +1,13 @@
 //'/movies/:movieId' - компонент <MovieDetailsPage>, страница с детальной информацией о кинофильме.
 
-import React, {Component} from "react";
+import React, {Component, Suspense, lazy} from "react";
 import fetchMovies from "../services/GetMovies"
-import {Link, Route} from "react-router-dom";
-import Reviews from "../components/Reviews";
-import Cast from "../components/Cast";
+import {Link, Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import routes from "../routes";
 import styled from "styled-components";
+
+const Reviews = lazy(() => import("../components/Reviews"));
+const Cast = lazy(() => import("../components/Cast"));
 
 const Poster = styled.img`
 max-height: 400px;
@@ -53,11 +54,9 @@ export default class MovieDetailsPage extends Component {
 
   handleGoBack = () => {
     const {state} = this.props.location;
-
     if (state && state.from) {
       return this.props.history.push(state.from);
     }
-
     this.props.history.push(routes.MOVIES);
   };
 
@@ -70,14 +69,14 @@ export default class MovieDetailsPage extends Component {
 
     return (
       <>
-        {isLoading === true && <p>Loading...</p>}
-        {isLoading === false && error && <p>Something went wrong please try again</p>}
+        {isLoading === true && <h2>Loading...</h2>}
+        {isLoading === false && error && <h2>{error}</h2>}
         {movie && isLoading === false &&
         <>
           <button onClick={this.handleGoBack}>Go Back</button>
           <SectionWrapper>
             <Poster alt={movie.original_title}
-                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
             <div>
               <h1>{movie.original_title} ({year})</h1>
               <p>User score: {movie.vote_average * 10}%</p>
@@ -87,17 +86,17 @@ export default class MovieDetailsPage extends Component {
               <p>{names}</p>
             </div>
           </SectionWrapper>
-            <h3>Additional information</h3>
-            <ul>
-              <li><Link to={`${this.props.match.url}/cast`} onClick={() => this.onCastClick()}>Cast</Link></li>
-              <li><Link to={`${this.props.match.url}/review`} onClick={() => this.onReviewsClick()}>Reviews</Link></li>
-            </ul>
-
+          <h3>Additional information</h3>
+          <ul>
+            <li><Link to={`${this.props.match.url}/cast`} onClick={() => this.onCastClick()}>Cast</Link></li>
+            <li><Link to={`${this.props.match.url}/review`} onClick={() => this.onReviewsClick()}>Reviews</Link></li>
+          </ul>
         </>
         }
-
-        <Route path={`${this.props.match.path}/cast`} component={Cast}/>
-        <Route path={`${this.props.match.path}/review`} component={Reviews}/>
+        <Switch>
+          <Route exact path={`${this.props.match.path}/cast`} component={Cast}/>
+          <Route exact path={`${this.props.match.path}/review`} component={Reviews}/>
+        </Switch>
       </>
     )
   }

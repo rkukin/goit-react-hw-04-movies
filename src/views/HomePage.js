@@ -31,7 +31,7 @@ export default class Homepage extends Component {
 
     return (
       <>
-        {isLoading === true && <p>Loading...</p>}
+        {isLoading === true && <h2>Loading...</h2>}
         {popular.length > 0 && !error && isLoading === false && <PopularList>
           <h3>Most popular</h3>
           {popular.map((movie) => {
@@ -40,8 +40,8 @@ export default class Homepage extends Component {
             </PopularListItem>
           })}
         </PopularList>}
-        {error && isLoading === false && <p>Something went wrong, please reload the page</p>}
-        {popular.length === 0 && !error && isLoading === false && <p>No popular movies yet</p>}
+        {error && isLoading === false && <h2>Something went wrong, please reload the page</h2>}
+        {popular.length === 0 && !error && isLoading === false && <h2>No popular movies yet</h2>}
       </>
     )
   }

@@ -26,10 +26,10 @@ export default class Reviews extends Component {
     const { isLoading, error, reviews} = this.state;
     return (
       <>
-        {isLoading && <p>Loading...</p>}
-        {!isLoading && error && <p>{error}</p>}
+        {isLoading && <h2>Loading...</h2>}
+        {!isLoading && error && <h2>{error}</h2>}
         {!isLoading && !error && reviews.length === 0 &&
-        <p>No reviews for this movie</p>}
+        <h2>No reviews for this movie</h2>}
         {!isLoading && !error && reviews.length > 0 &&
         <ul>
           {this.state.reviews.map((review) => {
