@@ -1,8 +1,8 @@
 //'/movies/:movieId' - компонент <MovieDetailsPage>, страница с детальной информацией о кинофильме.
 
-import React, {Component, Suspense, lazy} from "react";
+import React, {Component, lazy} from "react";
 import fetchMovies from "../services/GetMovies"
-import {Link, Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import routes from "../routes";
 import styled from "styled-components";
 
