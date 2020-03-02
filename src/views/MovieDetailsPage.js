@@ -34,24 +34,6 @@ export default class MovieDetailsPage extends Component {
       .finally(() => this.setState({isLoading: false}));
   }
 
-  onCastClick() {
-    this.fetchCasts(this.props.match.params.movieId)
-  }
-
-  onReviewsClick() {
-    this.fetchReviews(this.props.match.params.movieId)
-  }
-
-  fetchCasts = (id) => {
-    fetchMovies.fetchMovieCast(id)
-      .then(response => this.setState({casts: response.cast}))
-  };
-
-  fetchReviews = (id) => {
-    fetchMovies.fetchMovieReviews(id)
-      .then(response => this.setState({reviews: response.results}))
-  };
-
   handleGoBack = () => {
     const {state} = this.props.location;
     if (state && state.from) {
@@ -60,12 +42,26 @@ export default class MovieDetailsPage extends Component {
     this.props.history.push(routes.MOVIES);
   };
 
+  getMovieYear = movie => {
+    if (movie.release_date) {
+      return movie.release_date.substring(0, 4)
+    } else {
+      return ''
+    }
+  };
+
+  concatMovieGenres = movie => {
+    const reducer = (accumulator, obj) => accumulator + ' ' + obj.name;
+    if (movie.genres) {
+      return movie.genres.reduce(reducer, "")
+    } else {
+      return ''
+    }
+  };
+
   render() {
 
     const {isLoading, error, movie} = this.state;
-    const year = this.state.movie.release_date ? this.state.movie.release_date.substring(0, 4) : '';
-    const reducer = (accumulator, obj) => accumulator + ' ' + obj.name;
-    const names = this.state.movie.genres ? this.state.movie.genres.reduce(reducer, "") : '';
 
     return (
       <>
@@ -78,18 +74,18 @@ export default class MovieDetailsPage extends Component {
             <Poster alt={movie.original_title}
                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
             <div>
-              <h1>{movie.original_title} ({year})</h1>
+              <h1>{movie.original_title} ({this.getMovieYear(movie)})</h1>
               <p>User score: {movie.vote_average * 10}%</p>
               <h3>Overview</h3>
               <p>{movie.overview}</p>
               <h3>Genres</h3>
-              <p>{names}</p>
+              <p>{this.concatMovieGenres(movie)}</p>
             </div>
           </SectionWrapper>
             <h3>Additional information</h3>
             <ul>
-              <li><Link to={`${this.props.match.url}/cast`} onClick={() => this.onCastClick()}>Cast</Link></li>
-              <li><Link to={`${this.props.match.url}/review`} onClick={() => this.onReviewsClick()}>Reviews</Link></li>
+              <li><Link to={`${this.props.match.url}/cast`}>Cast</Link></li>
+              <li><Link to={`${this.props.match.url}/review`}>Reviews</Link></li>
             </ul>
         </>
         }
